@@ -21,7 +21,7 @@ BEGIN { debug = 0 }
         x += xinc
         y += yinc
         if (debug) line = line " " x "," y
-        ++map[x "," y]
+        ++map[x, y]
     } while (x != x2 || y != y2)
     if (debug) print line
 }

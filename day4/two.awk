@@ -1,8 +1,5 @@
 #!/usr/bin/env awk -f
-BEGIN {
-    debug = 0
-    deepdebug = 0
-}
+BEGIN { debug = 0 }
 function join(array, start, end, sep,    result, i) {
     if (sep == "") sep = " "; else if (sep == SUBSEP) sep = ""
     result = array[start]
@@ -30,26 +27,19 @@ function join(array, start, end, sep,    result, i) {
     }
     board = int((NR + 3) / 6)
     row = (NR - 2) % 6
-    boards[board][row][1] = $1
-    boards[board][row][2] = $2
-    boards[board][row][3] = $3
-    boards[board][row][4] = $4
-    boards[board][row][5] = $5
+    boards[board, row, 1] = $1
+    boards[board, row, 2] = $2
+    boards[board, row, 3] = $3
+    boards[board, row, 4] = $4
+    boards[board, row, 5] = $5
     if (board > boardcount) boardcount = board
     if (debug) print "board", board,"row", row, ":", $0
 }
 function find_winners(    board, row, col, allmatch) {
     for (board = 1; board <= boardcount; ++board) {
-        if (deepdebug) print "checking board", board, "rows"
         for (row = 1; row <= 5; ++row) {
-            if (deepdebug) {
-                disp = ""
-                for (col = 1; col <= 5; ++col) disp = disp " " boards[board][row][col]
-                print "row", row, "-" disp
-            }
-
             for (col = 1; col <= 5; ++col) {
-                allmatch = boards[board][row][col] in drawn
+                allmatch = boards[board, row, col] in drawn
                 if (!allmatch) break
             }
             if (allmatch) break
@@ -58,16 +48,9 @@ function find_winners(    board, row, col, allmatch) {
             winners[board] = 1
             continue
         }
-        if (deepdebug) print "checking board", board, "columns"
         for (col = 1; col <= 5; ++col) {
-            if (deepdebug) {
-                disp = ""
-                for (row = 1; row <= 5; ++row) disp = disp " " boards[board][row][col]
-                print "column", col, "-" disp
-            }
-
             for (row = 1; row <= 5; ++row) {
-                allmatch = boards[board][row][col] in drawn
+                allmatch = boards[board, row, col] in drawn
                 if (!allmatch) break
             }
             if (allmatch) break
@@ -79,8 +62,8 @@ function board_score(board,    row, col, score) {
     score = 0
     for (row = 1; row <= 5; ++row)
         for (col = 1; col <= 5; ++col)
-            if (!(boards[board][row][col] in drawn))
-                score += boards[board][row][col]
+            if (!(boards[board, row, col] in drawn))
+                score += boards[board, row, col]
     return score
 }
 END {
