@@ -1,7 +1,7 @@
 AWK solutions for Advent of Code 2021
 =====================================
-I decided to implement ths Advent of Code challenges this year in AWK. This
-daily programming challenge can be found at http://www.adventofcode.com
+I decided to implement the Advent of Code challenges this year in AWK. This
+daily programming challenge can be found at http://www.adventofcode.com.
 
 Here are my solutions. There is a folder for each day, each containing:
 
@@ -11,3 +11,6 @@ Here are my solutions. There is a folder for each day, each containing:
 | input.txt  | test input from the challenge description   |
 | one.awk    | first solution                              |
 | two.awk    | second solution                             |
+
+Jerry Williams
+gsw@wfam.info
