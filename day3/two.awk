@@ -14,10 +14,7 @@ function filter(data, idx, co2mode,    elem, count, keep)
 END {
     filter(o2, 1, 0)
     filter(co2, 1, 1)
-    if (length(o2) != 1 || length(co2) != 1) {
-        print "illegal length for o2/co2:", length(o2), length(co2)
-        exit 1
-    }
+    if (length(o2) != 1 || length(co2) != 1) { print "ERROR: illegal result"; exit 1 }
     for (elem in o2) for (i = 1; i <= maxlen; ++i) o = o*2 + substr(o2[elem], i, 1)
     for (elem in co2) for (i = 1; i <= maxlen; ++i) c = c*2 + substr(co2[elem], i, 1)
     print o * c

@@ -1,30 +1,11 @@
 #!/usr/bin/env awk -f
-BEGIN { debug = 0 }
-function join(array, start, end, sep,    result, i) {
-    if (sep == "") sep = " "; else if (sep == SUBSEP) sep = ""
-    result = array[start]
-    for (i = start + 1; i <= end; i++) result = result sep array[i]
-    return result
-}
 (NR == 1) {
-    if (NF != 1) {
-        print "ERROR: first record should contain only one set of comma-separated numbers"
-        exit 1
-    }
+    if (NF != 1) { print "ERROR: bad input"; exit 1 }
     drawcount = split($0, draws, ",")
-    if (debug) print drawcount, "draws:", join(draws, 1, drawcount)
 }
-(NR > 1 && (NR - 2) % 6 == 0) {
-    if (NF != 0) {
-        print "ERROR: board separators should be empty lines"
-        exit 1
-    }
-}
+(NR > 1 && (NR - 2) % 6 == 0 && NF != 0) { print "ERROR: bad input"; exit 1 }
 (NR > 1 && (NR - 2) % 6 > 0) {
-    if (NF != 5) {
-        print "ERROR: board row should contain exactly five numbers"
-        exit 1
-    }
+    if (NF != 5) { print "ERROR: bad input"; exit 1 }
     board = int((NR + 3) / 6)
     row = (NR - 2) % 6
     boards[board, row, 1] = $1
@@ -33,7 +14,6 @@ function join(array, start, end, sep,    result, i) {
     boards[board, row, 4] = $4
     boards[board, row, 5] = $5
     if (board > boardcount) boardcount = board
-    if (debug) print "board", board,"row", row, ":", $0
 }
 function find_winners(    board, row, col, allmatch) {
     for (board = 1; board <= boardcount; ++board) {
@@ -66,11 +46,7 @@ function board_score(board,    row, col, score) {
     return score
 }
 END {
-    if (debug) print "boardcount:", boardcount
-    if (drawcount < 5) {
-        print "ERROR: need at least 5 draws to win, there were only", drawcount
-        exit 1
-    }
+    if (drawcount < 5) { print "ERROR: bad input"; exit 1 }
     for (draw = 1; draw <= 4; ++draw) drawn[draws[draw]] = 1
     split("", winners)
     for (draw = 5; draw <= drawcount; ++draw) {
@@ -78,10 +54,7 @@ END {
         find_winners()
         if (length(winners) > 0) break
     }
-    if (length(winners) < 1) {
-        print "ERROR: no winners found after", drawcount, "draws"
-        exit 1
-    }
+    if (length(winners) < 1) { print "ERROR: illegal result"; exit 1 }
     if (length(winners) > 1) print "WARNING: multiple winners, choosing best score"
     for (board in winners) {
         s = board_score(board)

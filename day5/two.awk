@@ -1,5 +1,4 @@
 #!/usr/bin/env awk -f
-BEGIN { debug = 0 }
 {
     n1 = split($1, p1, ",")
     n2 = split($3, p2, ",")
@@ -16,17 +15,13 @@ BEGIN { debug = 0 }
     yinc = (y1 == y2) ? 0 : (y1 > y2) ? -1 : 1
     x = x1 - xinc
     y = y1 - yinc
-    if (debug) line = $0 " :"
     do {
         x += xinc
         y += yinc
-        if (debug) line = line " " x "," y
         ++map[x, y]
     } while (x != x2 || y != y2)
-    if (debug) print line
 }
 END {
-    if (debug) for (coordinate in map) print coordinate, ":", map[coordinate]
     overlaps = 0
     for (coordinate in map) if (map[coordinate] > 1) ++overlaps
     print overlaps

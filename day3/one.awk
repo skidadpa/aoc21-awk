@@ -10,7 +10,7 @@ END {
         epsilon *= 2
         if (count[i, 0] > count[i, 1]) ++epsilon
         else if (count[i, 1] > count[i, 0]) ++gamma
-        else { print "ERROR: counts match for bit", i; exit 1 }
+        else { print "ERROR: illegal result"; exit 1 }
     }
     print gamma * epsilon
 }
