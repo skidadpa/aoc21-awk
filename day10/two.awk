@@ -1,7 +1,7 @@
 #!/usr/bin/env awk -f
 BEGIN {
-    n = split("( [ { <", t1); split(") ] } >", t2); split("3 57 1197 25137", t3); split("1 2 3 4", t4)
-    for (i = 1; i <= n; ++i) {
+    split("( [ { <", t1); split(") ] } >", t2); split("3 57 1197 25137", t3); split("1 2 3 4", t4)
+    for (i in t1) {
         pairs[t1[i]] = t2[i]
         bugs[t2[i]] = t3[i]
         autos[t2[i]] = t4[i]
