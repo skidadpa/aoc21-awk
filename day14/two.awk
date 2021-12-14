@@ -9,34 +9,29 @@ BEGIN { FS = " -> " }
     rules[map[1],map[2]] = $2
 }
 END {
-    n = split(poly, polymer, "")
-    for (i in polymer) elements[polymer[i]] = 0
+    n = split(poly, initial_polymer, "")
+    for (i in initial_polymer) elements[initial_polymer[i]] = 0
     if (length(elements) * length(elements) + 2 != NR) { print "ERROR: bad input"; exit 1 }
 
-    for (i = 1; i < n; ++i) ++pairs[polymer[i],polymer[i+1]]
-    ++elements[polymer[1]]
-    ++elements[polymer[n]]
-    min = max = polymer[1]
-
+    for (i = 1; i < n; ++i) pairs[0][initial_polymer[i],initial_polymer[i+1]]++
     for (step = 1; step <= 40; ++step) {
-        split("", nxt)
-        for (c in pairs) {
+        for (c in pairs[step - 1]) {
             split(c, map, SUBSEP)
-            nxt[map[1], rules[c]] += pairs[c]
-            nxt[rules[c], map[2]] += pairs[c]
+            pairs[step][map[1], rules[c]] += pairs[step - 1][c]
+            pairs[step][rules[c], map[2]] += pairs[step - 1][c]
         }
-        split("", pairs); for (c in nxt) pairs[c] = nxt[c]
     }
 
-    for (c in pairs) {
+    ++elements[initial_polymer[n]]; ++elements[initial_polymer[1]]
+    for (c in pairs[40]) {
         split(c, map, SUBSEP)
-        elements[map[1]] += pairs[c]
-        elements[map[2]] += pairs[c]
+        elements[map[1]] += pairs[40][c]
+        elements[map[2]] += pairs[40][c]
     }
+    min = max = initial_polymer[1]
     for (i in elements) {
         if (elements[i] < elements[min]) min = i
         if (elements[i] > elements[max]) max = i
     }
     print elements[max] / 2 - elements[min] / 2
 }
-
