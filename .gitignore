@@ -1,2 +1,3 @@
-test/results.txt
+results.txt
 .*.sw?
+*.so
