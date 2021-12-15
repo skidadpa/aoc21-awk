@@ -23,13 +23,14 @@ END {
             if (coords[1]+0 > 1)    ways[coords[1]-1, coords[2]] = 1
             if (coords[1]+0 < xmax) ways[coords[1]+1, coords[2]] = 1
             if (coords[2]+0 < ymax) ways[coords[1], coords[2]+1] = 1
-            for (w in ways) if (!(w in paths[risk][path])) {
+            for (w in ways) if (!(w in reached) && !(w in paths[risk][path])) {
                 nxt = risk + cavern[w]
-                if (!(w in reached) && (!(nxt in ends) || !(w in ends[nxt]))) {
+                if (!(nxt in ends) || !(w in ends[nxt])) {
                     pn = ++npaths[nxt]
                     end[nxt][pn] = w
                     ends[nxt][w] = 1
-                    for (p in paths[risk][path]) paths[nxt][pn][p] = 1
+                    for (p in paths[risk][path]) if (!(p in reached))
+                        paths[nxt][pn][p] = 1
                     paths[nxt][pn][w] = 1
                 }
             }
