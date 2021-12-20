@@ -51,18 +51,26 @@ function set_offset(s, p) {
     offset[s] = negcoords(p)
     return s
 }
-function find(    l, m, s, p, off, q, count) {
-    for (l in locations) for (m in locations[l]) {
-        if ((l,m) in checked) continue
-        for (s in avail) for (p in scanner[s]) {
-            off = addcoords(p, negcoords(m))
-            count = 0
-            for (q in locations[l])
-                if (addcoords(q, off) in scanner[s])
-                if (++count >= 12)
-                return set_offset(s, off)
+function find(    l, m, s, scanned, toscan, p, off, q, count) {
+    for (l in locations) {
+        if (checked[l])  continue
+        for (m in locations[l]) {
+            if ((l,m) in checked) continue
+            for (s in avail) {
+                scanned = 0
+                toscan = length(scanner[s]) - 11
+                for (p in scanner[s]) if (++scanned <= toscan) {
+                    off = addcoords(p, negcoords(m))
+                    count = 0
+                    for (q in locations[l])
+                        if (addcoords(q, off) in scanner[s])
+                        if (++count >= 12)
+                        return set_offset(s, off)
+                }
+            }
+            checked[l,m] = 1
         }
-        checked[l,m] = 1
+        checked[l] = 1
     }
     print "CODE ERROR"; exit _exit=1
 }
