@@ -15,5 +15,11 @@ Here are my solutions. There is a folder for each day, each containing:
 | two.awk      | second solution                             |
 | *            | additional files as needed                  |
 
+Uodate
+------
+I had previously logged in using a different mechanism (probably email),
+although for 2022 I used my GitHub credentials, and the inputs/solutions
+are different. So I updated the repo to match the new problem set.
+
 Jerry Williams
 gsw@wfam.info
